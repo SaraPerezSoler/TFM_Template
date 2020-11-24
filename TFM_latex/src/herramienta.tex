@@ -1,0 +1,320 @@
+\chapter{Herramienta\label{sec:Herramienta}}
+SOCIO es un bot integrado, actualmente en Telegram y Twitter, y ampliable a cualquier red social, por cualquier persona. La interacción con el bot, es ligeramente distinta en las dos redes sociales, debido a que las interacciones en general son diferentes en las redes sociales, pues una es un sistema de mensajería instantánea, por medio de chats relativamente privados, y la otra es un sistema de micro-bloggin donde los estados de los usuarios son públicos. Posteriormente se explicará como funciona SOCIO en cada una de las redes sociales, pero primero se explicará las características generales de del bot, que son iguales para las dos redes sociales. 
+
+SOCIO trabaja por proyectos, para crear un modelo, primero es necesario crear un proyecto. Cada proyecto pertenece a un usuario, que será además el administrador. Para guardar los usuarios, el bot recoge está información de la red social de la que proceda, el usuario no tiene que registrarse de ninguna manera. De hecho, los usuarios están identificados simplemente por el nombre del canal o red social con la que se esté comunicándose con el bot, y el alias o nick del usuario en dicha red social. Los proyectos están identificados por el nombre del proyecto y el usuario al que pertenecen, por lo que un usuario no puede tener dos proyectos con el mismo nombre. Los proyectos tienen tres niveles de visibilidad: 
+\begin{itemize}
+\item \textbf{\textit{Public}}: accesible para todo el mundo.
+\item \textbf{\textit{Protected}}: accesible a nivel de lectura a todo el mundo, pero de escritura solo el administrador y a quien le de permisos.
+\item \textbf{\textit{Private}}: solo accesible para el administrador y a quien de permisos. 
+\end{itemize}
+
+Cuando se dice que es solo accesible por el administrador o usuarios con permisos, no se refiere que el resto de usuarios no podrán ver el estado del modelo, pues en redes sociales como Twitter que son publicas, las actualizaciones que haga el bot, podrán ser leídas por todo el mundo, y en un grupo de Telegram, todos los usuarios sin permisos dentro del grupo también podrán ver todos los mensajes que manda el bot. Esto se refiere, a que los usuarios sin permisos no podrán realizar peticiones de lectura o escritura al bot.  
+SOCIO le permite a los usuarios funcionalidad para gestionar sus propios proyectos: crear y eliminar proyectos, cambiar la visibilidad o gestionar los permisos a los usuarios. 
+
+Como se ha visto hay tres tipos de peticiones que hacerle al bot, las de gestión, que ya hemos visto antes, las de escritura y las de lectura. Las peticiones de escritura son:
+\begin{itemize}
+\item \textbf{Modificar el modelo}, para ello el bot analiza los mensajes en NL, con los que el bot puede realizar tres acciones sobre los elementos del modelo: crearlos, actualizarlos (cambiar una clase de concreta a abstracta o viceversa, dar tipo a una propiedad, tanto referencias como atributos, añadir una relación entre dos clases: herencia, referencias, contención...) y eliminarlos. Esto devuelve una imagen con el estado del modelo resaltando en otro color las últimas modificaciones (verde para creación y actualización, rojo para eliminación). 
+\item \textbf{Deshacer} las acciones generadas por los mensajes. Permite ir deshaciendo desde el último mensaje enviado al primero. 
+\item \textbf{Rehacer} las acciones deshechas. 
+\end{itemize}
+Las peticiones de lectura que soporta el bot son: 
+\begin{itemize}
+\item \textbf{Mostrar el estado actual del modelo} sin necesidad de modificarlo.
+\item \textbf{Validar el modelo}, señalado los errores, en caso de que los tuviera.
+\item \textbf{Obtener el modelo} en un fichero con formato ecore. 
+\item \textbf{Obtener el historial de mensajes} de un proyecto, completo o filtrado: por fecha, por elemento del modelo, por usuario, por tipo de acción. 
+\item \textbf{Obtener estadísticas} del proyecto: número de mensajes enviado por cada usuario, y como un mensaje puede realizar un número variable de acciones, número de acciones realizadas por un usuario. Ambas distribuidas en el tiempo o de forma absoluta y de todos los usuarios en general o de uno en concreto. Porcentaje de autoría de cada usuario. Número de acciones de cada tipo, realizadas por todos los usuarios o por uno en concreto. 
+\end{itemize}
+
+\section{Telegram}
+Como ya se ha mencionado, Telegram es un sistema de mensajería instantánea, donde los bots son frecuentes y promovidos. La interacción en el sistema puede ser a través de chats privados con una sola persona o bot, o en grupos con hasta 100.000 miembros (que pueden ser personas o bots indistintamente). A la hora de interactuar con los bots, hay leves diferencias a como se haría con las personas. Mientras que en un grupo, cada mensaje que mandes llegará de forma indistinta a todas las personas, los bots, por defecto, no tienen acceso a todos los mensajes. Para poder comunicarte con el bot están los comandos, palabras precedidas por ``/''. Los mensajes dirigidos al bot dentro de un grupo deben comenzar por un comando y pueden tener argumentos (todo el texto que haya a continuación del comando). Los comandos se pueden completan con ``@<nombre del bot>'' para aclarar a que bot está referenciando, en caso de que el grupo tenga más de un bot, pero para un solo bot es indiferente ponerlo o no. Para facilitar todo esto, las aplicaciones de Telegram disponen de un sistema de auto completado. Por defecto todos los bots tienen el comando ``/start'' para iniciar una conversación con el bot. SOCIO dentro de Telegram tiene los siguientes comandos:
+\begin{itemize}
+\item \textbf{\texttt{/start}}: muestra un mensaje de bienvenida y lista todos los comando disponibles del bot (Figura~\ref{fig:ejemploTelegram1}.a).
+\item \textbf{\texttt{/newproject}}: crea un nuevo proyecto(Figura~\ref{fig:ejemploTelegram1}.b).
+\item \textbf{\texttt{/delproject}}: elimina un proyecto.
+\item \textbf{\texttt{/setproject}}: selecciona un proyecto para un chat concreto, de está manera cada vez que se realice una acción no habrá que especificar sobre que proyecto, sino que siempre será sobre el mismo(Figura~\ref{fig:ejemploTelegram1}.c).
+\item \textbf{\texttt{/projects}}: lista todos los proyectos que tiene SOCIO.
+\item \textbf{\texttt{/projectmanager}}:  gestor para cambiar la visibilidad o gestionar los permisos a los usuarios (Figura~\ref{fig:ejemploTelegram1}.d).
+\item \textbf{\texttt{/talk}}: comando para mandar un mensaje en NL y modificar el modelo (Figura~\ref{fig:ejemploTelegram2} a y b).
+\item \textbf{\texttt{/undo}}: deshace el último mensaje (Figura~\ref{fig:ejemploTelegram2}.c).
+\item \textbf{\texttt{/redo}}: rehace el último mensaje deshecho (Figura~\ref{fig:ejemploTelegram2}.d).
+\item \textbf{\texttt{/show}}: muestra una imagen con el estado actual del modelo (Figura~\ref{fig:ejemploTelegram3}.a).
+\item \textbf{\texttt{/get}}: obtiene el meta-modelo en formato ecore. 
+\item \textbf{\texttt{/validate}}: valida el modelo (Figura~\ref{fig:ejemploTelegram3} a y b).
+\item \textbf{\texttt{/history}}: con este comando se puede obtener el histórico de los mensajes, pudiendo indicar el filtro deseado, y las estadísticas del proyecto.
+\item \textbf{\texttt{/help}}: envía un mensaje de ayuda, con un enlace a la página web de ayuda.
+\end{itemize}
+
+En el siguiente enlace hay un vídeo con una demostración del uso de SOCIO en Telegram: 
+\url{https://www.youtube.com/watch?v=kHf2qNtfNW4}
+
+\figpdf{ejemploTelegram1}{0.9}{Ejemplo del uso de SOCIO en Telegram. Comandos \textit{start}, \textit{newproject}, \textit{setproject} y \textit{projectmanager} }
+\figpdf{ejemploTelegram2}{0.9}{Ejemplo del uso de SOCIO en Telegram. Comandos \textit{talk}, \textit{undo} y \textit{redo}}
+\figpdf{ejemploTelegram3}{0.9}{Ejemplo del uso de SOCIO en Telegram. Comandos \textit{show}, \textit{validate}, \textit{get}, \textit{statistics} y \textit{history}}
+
+Las figuras \ref{fig:ejemploTelegram1}, \ref{fig:ejemploTelegram2} y \ref{fig:ejemploTelegram3} muestran ejemplos del uso de SOCIO dentro de Telegram. Una de las características de SOCIO en Telegram es que no es necesario indicar en cada mensaje todo los datos necesarios, sino que, el bot podrá mantener una conversación con el usuario, y preguntar los datos que le faltan. Ejemplos de esto se puede ver en varios comandos:  \textit{newproject} (Figura~\ref{fig:ejemploTelegram1}.b),  \textit{setproject} (Figura~\ref{fig:ejemploTelegram1}.c),  \textit{projectmanager} (Figura~\ref{fig:ejemploTelegram1}.d) y  \textit{talk} (Figura~\ref{fig:ejemploTelegram2}.a) En el comando \textit{newproject} (Figura~\ref{fig:ejemploTelegram1}.b), por ejemplo, el bot primero pregunta el nombre del proyecto y luego el nivel de visibilidad, para lo que además, Telegram permite facilitar un teclado al usuario, y tan solo es necesario pulsar uno de los botones. Este tipo de teclado se le proporciona al usuario en varías ocasiones, por ejemplo, cada vez que tiene que elegir un proyecto, se proporciona un teclado donde hay un botón para cada proyecto que se pueda seleccionar (Figura~\ref{fig:ejemploTelegram1}.c). Si se quiere evitar esté intercambio de mensajes con el bot en el que va preguntado la información que el comando necesita, es posible pasarla como argumento del comando. Un ejemplo de esto es la figura ~\ref{fig:ejemploTelegram2}.b, en la que al comando \textit{talk} se le pasa el mensaje en NL como argumento del comando, evitando que el bot pregunte. 
+En las figuras \ref{fig:ejemploTelegram2}.c y \ref{fig:ejemploTelegram2}.d vemos un ejemplo de \textit{undo} y \textit{redo}. Y por último, en la figura~\ref{fig:ejemploTelegram3} vemos dos ejemplo del comando \textit{validate} en el primero (a) el mensaje de error indica que a las propiedades \textit{price} de las clases \textit{Order} y \textit{Product} les falta el tipo, y el la segunda (b), tras haber dado tipo a estas propiedades, el bot nos indica que no hay ningún error. 
+\section{Twitter}
+
+% explicar twitter.
+Como Twitter no tiene un trato especial para los bots, sino que son cuentas normales manejadas por programas en lugar de personas, el concepto de comando no existe. Para indicar las acciones que queremos que realice el bot, los comandos del bot se envían con \textit{hashtag} (\#). Los comando que soporta SOCIO en Twitter son:
+
+\begin{itemize}
+\item \textbf{\texttt{\#start}}: manda un mensaje de bienvenida (Figura~\ref{fig:ejemploTwitter1}.a).
+\item \textbf{\texttt{\#newproject}}: crea un proyecto. Es necesario indicar el nombre del proyecto, y su visibilidad. Aunque si la visibilidad no es indicada, por defecto se pone \textit{public} (Figura~\ref{fig:ejemploTwitter1}.b).
+\item \textbf{\texttt{\#delproject}}: elimina un proyecto. Es necesario identificar el proyecto (Figura~\ref{fig:ejemploTwitter1}.b).
+\item \textbf{\texttt{\#projects}}: envía un tweet por cada proyecto disponible, con toda la información del proyecto (Figura~\ref{fig:ejemploTwitter2}.a).
+\item \textbf{\texttt{\#setvisibility}}: cambia la visibilidad de un proyecto. Es necesario identificar el proyecto e indicar la visibilidad. 
+\item \textbf{\texttt{\#talk}}: se usa para editar el modelo \ref{fig:ejemploTwitter2}.a). Aunque, en realidad se puede omitir \texttt{\#talk}, porque todos los mensajes que recibe el bot en Twitter sin comando, los interpreta como si pertenecieran a \textit{talk} \ref{fig:ejemploTwitter2}.b). Para este comando es necesario identificar el proyecto y mandar un mensaje en NL para indicar las modificaciones.
+\item \textbf{\texttt{\#undo}}: deshace el último mensaje de un proyecto\ref{fig:ejemploTwitter2}.c), que es necesario identificar.
+\item \textbf{\texttt{\#redo}}: rehace el último mensaje deshecho de un proyecto, que es necesario identificar  \ref{fig:ejemploTwitter2}.d).
+\item \textbf{\texttt{\#show}}: manda una imagen con el estado actual de un proyecto concreto \ref{fig:ejemploTwitter3}.b).
+\item \textbf{\texttt{\#get}}: devuelve un enlace a un servidor para poder descargar un fichero con meta-modelo en formato ecore. Es necesario identificar el proyecto y se puede añadir el tiempo que se quiere que el fichero esté disponible. Para ello, se debe indicar un número y la unidad. Las posibles unidades son minutos (``m'', ``min'' o ``minutes''), horas (``h'' o ``hours'') y días (``d'' o ``days'') (Figura~\ref{fig:ejemploTwitter4}.a). 
+\item \textbf{\texttt{\#validate}}: valida un proyecto e indica cuales son los errores en caso de que los hubiera\ref{fig:ejemploTwitter2} a y b).
+\item \textbf{\texttt{\#history}}: devuelve un enlace a un servidor para poder descargar un fichero con todos el historial de los mensajes de un proyecto. Al igual que con \textit{get}, es posible añadirle el tiempo que se desea que esté el fichero disponible (Figura~\ref{fig:ejemploTwitter4}.b).
+\item \textbf{\texttt{\#statistics}}: muestra todas las gráficas de las estadísticas de un proyecto(Figura~\ref{fig:ejemploTwitter4}.c). 
+\item \textbf{\texttt{\#help}}: envía un mensaje de ayuda, con un enlace a la página web de ayuda. 
+\end{itemize}
+\figpdf{ejemploTwitter1}{0.9}{Ejemplo del uso de SOCIO en Twitter. Comandos \textit{start}, \textit{newproject} y \textit{delproject}}
+\figpdf{ejemploTwitter2}{0.9}{Ejemplo del uso de SOCIO en Twitter. Comandos \textit{projects}, \textit{talk}, \textit{undo} y \textit{redo}}
+\figpdf{ejemploTwitter3}{0.9}{Ejemplo del uso de SOCIO en Twitter. Comandos \textit{show} y \textit{validate}}
+\figpdf{ejemploTwitter4}{0.9}{Ejemplo del uso de SOCIO en Twitter. Comandos \textit{get}, \textit{history} y \textit{statistics}}
+
+A diferencia de en Telegram, en Twitter no hay un proyecto asociado a los usuarios, por lo que, normalmente es necesario identificar en que proyecto vamos a realizar la acción, para ello hay dos manera, la primera es indicándolo de forma explicita con: ``\textbf{/}<canal del administrador>\textbf{/}<alias del administrador>\textbf{/}<nombre del proyecto>'' (Figura~\ref{fig:ejemploTwitter3}.b, comando \textit{show}). Pero, para facilitar esto a los usuario, todos los mensajes de SOCIO comienzan con un identificador de proyecto. Respondiendo a estos mensajes, directamente se asocia con el proyecto en cuestión. Un ejemplo de esto lo podemos ver en la figura~\ref{fig:ejemploTwitter1}, tras solicitar la creación de un nuevo proyecto, SOCIO responde con la identificación del proyecto. Después el usuario responde a este mensaje con el comando \textit{delproject} sin necesidad de especificar el proyecto, y el bot lo asocia con el proyecto anteriormente mencionado. Gracias a esto, se puede mantener una conversación con el bot, respondiendo a sus mensajes, y simplificando la interacción.
+
+\section{Trabajando con las dos redes sociales a la vez}
+Es posible trabajar en el mismo proyecto, dos usuarios desde redes sociales distintas. De hecho, los ejemplos explicados anteriormente, para Telegram y Twitter, son dos usuarios trabajando simultáneamente en el mismo proyecto. Para que esto sea posible, SOCIO mantiene informados a los de una red social de los cambios que surgen en la otra, cuando sea necesario. Más aún, también lo hace entre dos grupos distintos de Telegram estén trabajando en el mismo proyecto. La Figura~\ref{fig:actualizacionTwitter} muestra como actualiza esta información en Twitter cuando se realiza algún cambio en Telegram, y la figura~\ref{fig:actualizacionTelegram} como actualiza la información en Telegram cuando se modifica en Twitter. \\
+
+\figpdf{actualizacionTwitter}{1}{Actualización de la información en Twitter cuando el proyecto se modifica en Telegram}\figpdf{actualizacionTelegram}{1}{Actualización de la información en Telegtam cuando el proyecto se modifica en Twitter}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Anexo}
+\begin{itemize}
+\item \textbf{Crear un proyecto}: petición para crear un nuevo proyecto. Necesita el usuario crear el proyecto, el nombre del proyecto y la visibilidad. Si no se especifica la visibilidad, por defecto se pone en \textit{Public}.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/newproyect/\{nombre\_proyecto\}} o\\ \textit{/configuration/newproyect/\{nombre\_proyecto\}/\{visibilidad\}}
+	\item \textbf{Argumentos}: En formato Json, el usuario que realiza la petición (Tabla~\ref{tab:newproject})\\
+		\begin{table}[h]
+		\centering
+		
+		\begin{tabular}{lll}
+		\textbf{Nombre}  & \textbf{Tipo} & \textbf{Descripción}                                 \\ \hline \hline
+		\textit{user} & User(Tabla~\ref{tab:user}) & usuario que realiza la petición\\ \hline
+		\end{tabular}
+		\caption{Argumentos de \textit{newproject}, \textit{remove\_project} \textit{visibility}, \textit{validate}}
+		\label{tab:newproject}
+		\end{table}
+	\item \textbf{Retorno}: El proyecto que se ha creado en formato json (Tabla~\ref{tab:project})
+	\end{itemize}
+\item \textbf{Eliminar un proyecto}: petición para eliminar un proyecto. La petición solo será realizada si el usuario que la realiza la petición es el administrador del proyecto. 
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/remove\_project/\{id\_proyecto\}} o\\ \textit{/configuration/remove\_project/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición (Tabla~\ref{tab:newproject})
+	\item \textbf{Retorno}: Un mensaje de error o de éxito (\textit{String}).
+	\end{itemize}
+	
+\item \textbf{Cambiar la visibilidad de un proyecto}: petición para cambiar la visibilidad del proyecto. Solo es atendida si el usuario que lo solicita es el administrador del proyecto.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/visibility/\{id\_proyecto\}/\{visibility\}} o\\ \textit{/configuration/visibility/\{channel\}/\{user\}/\{nombre\_proyecto\}/\{visibility\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición (Tabla~\ref{tab:newproject})
+	\item \textbf{Retorno}: El proyecto que se ha modificado en formato json (Tabla~\ref{tab:project})	
+	\end{itemize}
+\item \textbf{Validar un proyecto}: petición para pedir una validación del proyecto. Solo es atendida si el usuario tiene permisos de lectura en el proyecto, esto es o bien el proyecto es \textit{protected} o \textit{public}, o bien en administrador se los ha dado explicitamente. 
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/validate/\{id\_proyecto\}} o\\ \textit{/configuration/validate/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición (Tabla~\ref{tab:newproject})
+	\item \textbf{Retorno}: Un mensaje de error o de éxito (\textit{String}).	
+	\end{itemize}
+\item \textbf{Añadir un usuario a un proyecto}: Con esta petición se le pueden dar permisos de lectura o escritura a un usuario, para que la petición sea atendida es necesario que el usuario que realicé la petición sea el administrador del proyecto.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/addUser/\{id\_proyecto\}} o\\ \textit{/configuration/addUser/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición, el usuario que se quiere añadir al proyecto y el nivel de acceso que se le va a dar(Tabla~\ref{tab:addUser}).\\
+		\begin{table}[h]
+		\centering
+		
+		\begin{tabular}{lll}
+		\textbf{Nombre}  & \textbf{Tipo} & \textbf{Descripción}                                 \\ \hline \hline
+		\textit{user} & User(Tabla~\ref{user}) & usuario que realiza la petición\\
+		\textit{userToSearch} & User(Tabla~\ref{user}) & usuario que se quiere añadir al proyecto\\ 
+		\textit{access} & String & Nivel de acceso que se le va a dar (\textit{edit} o \textit{read})\\ \hline
+		\end{tabular}
+		\caption{Argumentos de \textit{addUser}}
+		\label{tab:addUser}
+		\end{table}
+	\item \textbf{Retorno}: El proyecto que se ha modificado en formato json (Tabla~\ref{tab:project})	
+	\end{itemize}
+\item \textbf{Eliminar a un usuario de un proyecto}: Quita los permisor de un usuario en un proyecto. Para que la petición tenga efecto es necesario que el usuario que realiza la petición sea el administrador del proyecto y que el usuario que se quiere eliminar tenga permisos de lectura o de escritura en el proyecto.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/deleteUser/\{id\_proyecto\}} o\\ \textit{/configuration/deleteUser/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición y el usuario que se quiere eliminar del proyecto (Tabla~\ref{tab:removeUser}).\\
+		\begin{table}[h]
+		\centering
+		
+		\begin{tabular}{lll}
+		\textbf{Nombre}  & \textbf{Tipo} & \textbf{Descripción}                                 \\ \hline \hline
+		\textit{user} & User(Tabla~\ref{user}) & usuario que realiza la petición\\
+		\textit{userToSearch} & User(Tabla~\ref{tab:user}) & usuario que se va a modificar en el proyecto\\ \hline
+		\end{tabular}
+		\caption{Argumentos de \textit{removeUser} y \textit{updateUser}}
+		\label{tab:removeUser}
+		\end{table}
+	\item \textbf{Retorno}: El proyecto que se ha modificado en formato json (Tabla~\ref{tab:project})	
+	\end{itemize}
+\item \textbf{Cambiar privilegios de un usuario en un proyecto}: Cambia el nivel de acceso de un usuario a un proyecto, si el usuario tiene permisos de escritura, se cambiará a lectura y viceversa. Para que la petición tenga resultado, es necesario que el usuario que realiza la petición sea el administrador del proyecto y que el usuario al que se le va a cambiar el acceso tenga previamente algún acceso al proyecto. 
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/configuration/updateUser/\{id\_proyecto\}} o\\ \textit{/configuration/updateUser/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: Json, el usuario que realiza la petición y el usuario que se quiere modificar en el proyecto (Tabla~\ref{tab:removeUser}).\\
+	\item \textbf{Retorno}: El proyecto que se ha modificado en formato json (Tabla~\ref{tab:project})		
+	\end{itemize}
+\item \textbf{Editar un proyecto}: Modifica el modelo de un proyecto, para que la petición tenga resultado, es necesario que el usuario tenga permiso de edición en el proyecto. Si el campo \textit{text} está vacío, está petición devolverá el estado actual del modelo, sin realizar ninguna modificación. Para esto, solo hace falta que el usuario tenga acceso de lectura.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/editor/do/\{id\_proyecto\}} o\\ \textit{/editor/do/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: El mensaje que se envió para editar el modelo (Tabla~\ref{tab:Message}).\\
+	\item \textbf{Retorno}: Un fichero png con la imagen de la actualización en el modelo.	
+	\end{itemize}
+\item \textbf{Deshacer la última edición}: Deshace el último mensaje que modificó el modelo. Es necesario que el usuario que realiza la petición tenga acceso de edición.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/editor/undo/\{id\_proyecto\}} o\\ \textit{/editor/undo/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: El mensaje que se envió para editar el modelo (Tabla~\ref{tab:Message}).\\
+	\item \textbf{Retorno}: Un fichero png con la imagen de la actualización en el modelo.	
+	\end{itemize}
+\item \textbf{Rehacer lo último deshecho}: Rehace el último mensaje que deshecho en el modelo. Es necesario que el usuario que realiza la petición tenga acceso de edición.
+	\begin{itemize}
+	\item \textbf{Método}: POST
+	\item \textbf{Path}: \textit{/editor/redo/\{id\_proyecto\}} o\\ \textit{/editor/redo/\{channel\}/\{user\}/\{nombre\_proyecto\}}
+	\item \textbf{Argumentos}: El mensaje que se envió para editar el modelo (Tabla~\ref{tab:Message}).\\
+	\item \textbf{Retorno}: Un fichero png con la imagen de la actualización en el modelo.	
+	\end{itemize}
+\item \textbf{Lista de todos los proyectos}: Lista todos los proyectos que contiene SOCIO.
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects}
+	\item \textbf{Retorno}: Una lista con todos los proyectos que tiene el sistema en formato Json (Tabla~\ref{tab:projects}).
+		\begin{table}[h]
+		\centering
+		\begin{tabular}{lll}
+		\textbf{Nombre}  & \textbf{Tipo} & \textbf{Descripción}                                 \\ \hline \hline
+		\textit{projectList} & Array<Project>(Tabla~\ref{tab:project}) & usuario que se va a modificar en el proyecto\\ \hline
+		\end{tabular}
+		\caption{Argumentos de \textit{projects}}
+		\label{tab:projects}
+		\end{table}
+	\end{itemize}
+\item \textbf{Lista de proyectos con cierta visibilidad}: Lista todos los proyectos con cierta visibilidad: \textit{Public}, \textit{protected} o \textit{private}
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects/\{visibility\}}
+	\item \textbf{Retorno}: Una lista con todos los proyectos que tiene esa visibilidad (Tabla~\ref{tab:projects}).
+	\end{itemize}
+\item \textbf{Proyectos que pertenecen a un usuario}: Lista todos los proyectos que pertenecen a un usuario.
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects/\{channel\}/\{user\}}
+	\item \textbf{Retorno}: Una lista con todos los proyectos que tiene un usuario (Tabla~\ref{tab:projects}).
+	\end{itemize}
+\item \textbf{Proyectos que un usuario puede leer}: Lista todos los proyectos en los que un usuario tiene acceso de lectura.
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects/read/\{channel\}/\{user\}}
+	\item \textbf{Retorno}: Una lista de los proyectos (Tabla~\ref{tab:projects}).
+	\end{itemize}
+\item \textbf{Proyectos que un usuario puede escribir}: Lista todos los proyectos en los que un usuario tiene acceso de escritura.
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects/write/\{channel\}/\{user\}}
+	\item \textbf{Retorno}: Una lista de los proyectos que tiene un usuario (Tabla~\ref{tab:projects}).
+	\end{itemize}
+\item \textbf{Información de un proyecto}: Devuelve toda la información sobre determinado proyecto.
+	\begin{itemize}
+	\item \textbf{Método}: GET
+	\item \textbf{Path}: \textit{/projects/info/\{channel\}/\{user\}/\{projectName\}} o\\ \textit{/projects/info/\{projectId\}}
+	\item \textbf{Retorno}: El proyecto del que se pide información (Tabla~\ref{tab:project}).
+	\end{itemize}
+\end{itemize}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\multicolumn{3}{c}{\textit{\textbf{User}}}                                              \\
+\textbf{Nombre}  & \textbf{Tipo} & \textbf{Descripción}                                 \\ \hline \hline
+\textit{name}    & String        & \textit{Opcional}. Nombre del usuario.                        \\
+\textit{channel} & String        & Nombre de la red social.                             \\
+\textit{nick}    & String        & Alias del usuario, debe ser único en cada red social. \\
+\textit{id}      & Long          & Id del usuario, debe ser único en cada red social.    \\ \hline
+\end{tabular}
+\caption{Campo del json del objeto \textit{User}}
+\label{tab:user}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\multicolumn{3}{c}{\textit{\textbf{Project}}}                                              \\
+\textbf{Nombre}     & \textbf{Tipo}   & \textbf{Descripción}                                 \\ \hline \hline
+\textit{admin}      & User(Tabla~\ref{tab:user})            & Usuario propietario del proyecto.                    \\
+\textit{name} 	    & String          & Nombre del proyecto.                             \\
+\textit{id}         & Long            & Id del proyecto.									 \\
+\textit{visibility} & String          & Visibilidad del proyecto. \textit{Public}, \textit{Private} o \textit{Protected}.    \\ 
+\textit{createAt}	& Long			  & Fecha de creación expresada en Tiempo Unix.\\
+\textit{canEdit}	& Array<User> (Tabla~\ref{tab:user})	  & \textit{Opcional}. Array de usuarios que pueden editar el proyecto.\\
+\textit{canRead}	& Array<User> (Tabla~\ref{tab:user})	  & \textit{Opcional}. Array de usuarios que pueden leer el proyecto.\\
+\hline
+\end{tabular}
+\caption{Campo del json del objeto \textit{Project}}
+\label{tab:project}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\multicolumn{3}{c}{\textit{\textbf{Message}}}                                                     \\
+\textbf{Nombre}     & \textbf{Tipo}   & \textbf{Descripción}                                      \\ \hline \hline
+\textit{user}       & User(Table~\ref{tab:user})            & Usuario que manda el mensaje.                             \\
+\textit{msg} 	    & String          & Texto completo del mensaje.                               \\
+\textit{text}       & String          & \textit{Opcional}. El texto del mensaje, sin commandos ni textos \\ 
+					&				  & propios de cada red social. 			  \\
+\textit{date}       & Long            & Fecha de envío del mensaje expresada en Tiempo Unix.      \\ 
+\textit{id}	        & String		  & Id del mensaje.\\
+\textit{actions}	& Array<String>	  & \textit{Opcional}. Array de las acciones causada por el texto. \\
+\hline
+\end{tabular}
+\caption{Campo del json del objeto \textit{Project}}
+\label{tab:Message}
+\end{table}

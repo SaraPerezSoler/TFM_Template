@@ -1,0 +1,131 @@
+%
+% Portada
+%
+
+% Universidad, Facultad
+\pagenumbering{Alph}
+
+\begin{titlepage}
+\selectlanguage{spanish}
+\begin{center}
+\textbf{\begin{huge}
+\universidad \\
+\end{huge}}
+\bigskip 
+\begin{LARGE}
+\facultad \\
+\end{LARGE}
+\end{center}
+
+\bigskip
+\bigskip
+
+%
+% Imágenes (logos) izquierdo y derecho
+%
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.35]{\logoizq}
+    \hspace{1cm}
+		\includegraphics[scale=0.4]{\logoder}
+	\end{center}	
+\end{figure}
+\bigskip
+\bigskip
+\bigskip
+
+\textbf{\begin{center}
+\begin{large}
+\MakeUppercase{Trabajo Fin de Master}
+\end{large}
+\end{center}}
+
+\bigskip
+\bigskip
+\bigskip
+
+% Nombre del TFM
+\begin{center}
+\textbf{\begin{huge}
+\MakeUppercase{\nombretrabajo}\\
+\end{huge}}
+\end{center}
+
+\bigskip
+\bigskip
+\bigskip
+
+% Grado
+\begin{center}
+\begin{large}
+\textbf{\grado}\\
+\end{large}
+\end{center}
+
+
+
+
+
+% Nombre del autor
+\vspace{\fill}
+\begin{center}
+\textbf{\nombreautor}\\
+% Tutor
+\textbf{Tutora: \nombreprimertutor}\\
+% Tutor
+\textbf{Tutor: \nombresegundotutor}\\
+% Ponente, si está definido en main.tex
+\ifcsname nombreponente\endcsname
+\textbf{Ponente: \nombreponente}\\
+\fi
+\textbf{\departamento}
+\bigskip
+
+% Fecha
+\textbf{\fecha}\\
+\end{center}
+\end{titlepage}
+
+% Primera página
+
+\thispagestyle{empty}
+\par\vspace*{\fill}
+\begin{flushleft}
+\begin{scriptsize}
+\end{scriptsize}\end{flushleft}
+\newpage
+\thispagestyle{empty}
+\begin{center}
+
+% Nombre del trabajo
+\textbf{\begin{large}
+\MakeUppercase{\nombretrabajo}\\*
+\end{large}}
+\vspace*{0.2cm}
+\vspace{5cm}
+
+% Nombre del autor y del tutor
+\large Autor: \nombreautor \\*
+\large Tutora: \nombreprimertutor \\*
+\large Tutor: \nombresegundotutor \\*
+\ifcsname nombreponente\endcsname
+\large Ponente: \nombreponente\\
+\fi
+
+\vfill
+
+% Grupo de investigación, departamento, facultad, universidad y fecha
+\ifcsname grupoInvestigacion\endcsname
+\grupoInvestigacion \\
+\fi
+\departamento \\
+\facultad \\
+\universidad \\
+\vspace{1cm}
+\fecha \\
+
+\clearpage
+
+\end{center}
+
+\normalsize

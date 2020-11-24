@@ -1,0 +1,171 @@
+% Definiciones y constantes de estilo
+\include{definiciones}
+
+% Definiciones de comandos
+\newcommand{\figpdf}[3]{ % {FIGNAME}{FACTOR}{CAPTION} }
+    \begin{figure}[tb]
+        \centerline{\includegraphics[width=#2\textwidth]{graphics/#1}}
+        \caption{#3}
+        \label{fig:#1}
+    \end{figure}
+}
+
+\newcommand{\figpdftwo}[3]{ % {FIGNAME}{FACTOR}{CAPTION} }
+    \begin{figure}[h]
+        \centerline{\includegraphics[width=#2\textwidth]{graphics/#1}}
+        \caption{#3}
+        \label{fig:#1}
+    \end{figure}
+}
+
+\newcommand{\figpdftree}[3]{ % {FIGNAME}{FACTOR}{CAPTION} }
+    \begin{figure}[h!]
+        \centerline{\includegraphics[width=#2\textwidth]{graphics/#1}}
+        \caption{#3}
+        \label{fig:#1}
+    \end{figure}
+}
+\newcommand{\nombreautor}{Author}
+\newcommand{\nombreprimertutor}{First Tutor}
+\newcommand{\nombresegundotutor}{Second Tutor}
+\newcommand{\nombretrabajo}{Title}
+\newcommand{\fecha}{Date}
+\newcommand{\grado}{Master name}
+% Descomentar si tu trabajo tiene un ponente
+%\newcommand{\nombreponente}{TODO: Nombre del ponente}
+% Descomentar si tu trabajo está asociado a un grupo de investigación
+\newcommand{\grupoInvestigacion}{Research group}
+\newcommand{\departamento}{Department}
+\newcommand{\facultad}{Escuela Politécnica Superior}
+\newcommand{\universidad}{Universidad Autónoma de Madrid}
+\newcommand{\pieparizq}{}
+\newcommand{\pieparcen}{Trabajo de Fin de Master}
+\newcommand{\logoizq}{Logo_EPS}
+\newcommand{\logoder}{Logo_UAM}
+\newcommand{\correo}{e-mail}
+
+
+
+% Glosario y acrónimos
+%\makeglossaries
+%\input{src/glosario}
+
+% Rerefencias
+\bibliography{src/bibliografia}
+
+% Inicio del documento
+\begin{document}
+
+% Elección del idioma (español)
+\selectlanguage{spanish}
+
+%
+% Portada
+%
+\pagenumbering{gobble}
+\include{portada}
+\hypersetup{pageanchor=true}
+
+% Estilo de párrafo de los capítulos
+\setlength{\parskip}{0.75em}
+\renewcommand{\baselinestretch}{1.25}
+% Interlineado simple
+\spacing{1}
+
+%
+% Agradecimientos
+%
+\pagenumbering{Roman}
+\setcounter{page}{0}
+\include{src/agradecimientos}  
+
+%
+% Resumen
+%
+\include{src/resumen}
+
+%
+% Glosario
+%
+\printglossary[title=Glosario,toctitle=Glosario]
+\printglossary[title=Acrónimos,toctitle=Acrónimos,type=\acronymtype]
+
+% Estilo de párrafo de los índices
+\setlength{\parskip}{1pt}
+\renewcommand{\baselinestretch}{1}
+
+%
+% Tabla de contenidos
+%
+\tableofcontents
+\listoftables
+\listoffigures
+\cleardoublepage
+
+% Estilo de párrafo de los capítulos
+\setlength{\parskip}{0.75em}
+\renewcommand{\baselinestretch}{1.25}
+% Interlineado simple
+\spacing{1}
+% Numeración contenido
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%
+% Introducción
+%
+\include{src/introduccion}
+%
+% Estado del arte
+%
+\include{src/estadoDelArte}
+
+%
+% Enfoque
+%
+\include{src/enfoque}
+
+%
+% arquitectura y herramienta
+%
+\include{src/arquitectura}
+
+
+%
+% Resultados
+%
+\include{src/evaluacion}
+
+%
+% Conclusiones
+%
+\include{src/conclusiones} 
+
+%
+% Página en blanco
+%
+\cleardoublepage
+
+%
+% Bibliografía
+%
+\printbibliography[heading=bibintoc]
+
+% No expandir elementos para llenar toda la página
+\raggedbottom
+
+%
+% Apéndices
+%
+\appendix
+\cleardoublepage
+\addappheadtotoc
+\appendixpage
+
+%
+% TODO: Apéndices del TFG
+%
+\include{src/apendiceCuestionario}
+
+% Fin del documento
+\end{document}
